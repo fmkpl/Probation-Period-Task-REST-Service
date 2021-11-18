@@ -1,13 +1,26 @@
 @RestResource(urlMapping='/Project__c/*')
 global with sharing class CalendarWorklogProjectsRestService {
+
     @HttpGet
     global static Project__c getRecordData() {
-        RestRequest request = RestContext.request;
+        RestRequest req = RestContext.request;
+        RestResponse res = RestContext.response;
+        req.addHeader('XAuth', 'randomstring');
 
-        String projectId = request.requestURI.substring(request.requestURI.lastIndexOf('/')+1);
-        Project__c result =  [select Id, Name, Priority__c
-                        FROM Project__c
-                        WHERE Id = :projectId];
-        return result;
+        //String xAuth = req.requestURI.substring(req.requestURI.lastIndexOf('=')+1);
+        String projectId = req.requestURI.substring(req.requestURI.lastIndexOf('/')+1);
+
+        if (req.headers.get('XAuth') == System.Label.JETBI_Calendar_Worklog_XAuth_c) {
+            Project__c result =  [select Id, Name, Priority__c
+            FROM Project__c
+            WHERE Id = :projectId];
+            return result;
+        } else {
+            res.statusCode = 401;
+            res.responseBody = Blob.valueOf('Unauthorized');
+            return null;
+        }
+        
+        
     }
 }

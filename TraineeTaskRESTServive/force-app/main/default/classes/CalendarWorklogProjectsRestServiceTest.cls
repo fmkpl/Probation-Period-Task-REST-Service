@@ -10,7 +10,7 @@ private class CalendarWorklogProjectsRestServiceTest {
 
         request.requestUri = 'https://mindful-raccoon-838otp-dev-ed.lightning.force.com/services/apexrest/Project__c/'  + recordId;
         request.httpMethod = 'GET';
-        request.addParameter('XAuth', 'randomstring');
+        request.addHeader('XAuth', 'randomstring');
         RestContext.request = request;
         Project__c thisProj = CalendarWorklogProjectsRestService.getRecordData();
         
@@ -28,7 +28,7 @@ private class CalendarWorklogProjectsRestServiceTest {
 
         request.requestUri = 'https://mindful-raccoon-838otp-dev-ed.lightning.force.com/services/apexrest/Project__c/'  + recordId;
         request.httpMethod = 'GET';
-        request.addParameter('XAuth', 'errorstring');
+        request.addHeader('XAuth', 'errorstring');
         RestContext.request = request;
         Project__c thisProj = CalendarWorklogProjectsRestService.getRecordData();
         

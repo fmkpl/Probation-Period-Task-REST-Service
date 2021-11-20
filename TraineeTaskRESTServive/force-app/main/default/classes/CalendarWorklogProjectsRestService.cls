@@ -5,11 +5,10 @@ global with sharing class CalendarWorklogProjectsRestService {
     global static Project__c getRecordData() {
         RestRequest req = RestContext.request;
         RestResponse res = RestContext.response;
-        //req.addHeader('XAuth', 'randomstring');
 
         String projectId = req.requestURI.substring(req.requestURI.lastIndexOf('/')+1);
 
-        if (req.params.get('XAuth') == System.Label.JETBI_Calendar_Worklog_XAuth_c) {
+        if (req.headers.get('XAuth') == System.Label.JETBI_Calendar_Worklog_XAuth_c) {
             Project__c result =  [select Id, Name, Priority__c
             FROM Project__c
             WHERE Id = :projectId];
